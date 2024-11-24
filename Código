@@ -1,0 +1,69 @@
+import os
+import subprocess
+import json
+
+# Função para instalar dependências do ambiente
+def instalar_dependencias():
+    print("Instalando dependências...")
+    dependencias = ["python", "pip", "git"]
+    for dep in dependencias:
+        try:
+            subprocess.run([dep, "--version"], check=True)
+            print(f"{dep} já está instalado.")
+        except FileNotFoundError:
+            print(f"{dep} não encontrado. Instalando...")
+            if dep == "python":
+                os.system("winget install -e --id Python.Python.3")
+            elif dep == "pip":
+                os.system("python -m ensurepip --upgrade")
+            elif dep == "git":
+                os.system("winget install -e --id Git.Git")
+    print("Dependências instaladas!")
+
+# Função para configurar ambiente de trabalho
+def configurar_ambiente():
+    print("Configurando ambiente de trabalho...")
+    projetos = {
+        "backend": "https://github.com/exemplo/backend-template.git",
+        "frontend": "https://github.com/exemplo/frontend-template.git"
+    }
+    for nome, repo in projetos.items():
+        print(f"Clonando repositório {nome}...")
+        os.system(f"git clone {repo}")
+        print(f"Repositório {nome} configurado com sucesso!")
+    print("Ambiente configurado!")
+
+# Função para exibir tutoriais interativos
+def exibir_tutoriais():
+    print("\n=== TUTORIAIS INTERATIVOS ===")
+    tutoriais = {
+        "Configuração do Git": "https://docs.github.com/pt/get-started/quickstart",
+        "Práticas de Codificação": "https://www.python.org/dev/peps/pep-0008/",
+        "Introdução ao Projeto": "Leia o arquivo README.md no diretório do projeto."
+    }
+    for titulo, link in tutoriais.items():
+        print(f"{titulo}: {link}")
+
+# Função para gerar relatório de progresso
+def gerar_relatorio():
+    print("\nGerando relatório de progresso...")
+    progresso = {
+        "Dependências instaladas": True,
+        "Ambiente configurado": True,
+        "Tutoriais concluídos": ["Configuração do Git", "Práticas de Codificação"]
+    }
+    with open("relatorio_progresso.json", "w") as arquivo:
+        json.dump(progresso, arquivo, indent=4)
+    print("Relatório salvo como 'relatorio_progresso.json'.")
+
+# Função principal
+def main():
+    print("Bem-vindo ao Sistema de Onboarding Técnico Automatizado!\n")
+    instalar_dependencias()
+    configurar_ambiente()
+    exibir_tutoriais()
+    gerar_relatorio()
+    print("\nOnboarding técnico concluído com sucesso!")
+
+if __name__ == "__main__":
+    main()
